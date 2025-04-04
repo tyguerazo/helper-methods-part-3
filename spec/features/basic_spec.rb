@@ -130,7 +130,7 @@ describe "/movies/[ID]" do
 
     visit "/movies/#{movie.id}"
 
-    expect(page).to have_selector("a[href='/movies/#{movie.id}'][data-turbo-method='delete']")
+    expect(page).to have_selector("a[href='/movies/#{movie.id}'][data-method='delete']")
   end
 end
 
