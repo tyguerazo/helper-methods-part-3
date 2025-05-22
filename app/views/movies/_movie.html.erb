@@ -1,0 +1,39 @@
+<div class="card h-100">
+  <div class="card-header">
+    <%= link_to "Movie ##{movie.id}", movie, class: "text-decoration-none" %>
+  </div>
+
+  <div class="card-body">
+    <h5 class="card-title"><%= movie.title %></h5>
+    <p class="card-text"><%= truncate(movie.description, length: 100) %></p>
+    
+    <% if movie.image_url.present? %>
+      <img src="<%= movie.image_url %>" alt="<%= movie.title %>" class="img-fluid mb-2" style="max-height: 200px;">
+    <% end %>
+    
+    <% if movie.released_on.present? %>
+      <p class="card-text"><small class="text-muted">Released: <%= movie.released_on.strftime("%B %d, %Y") %></small></p>
+    <% end %>
+
+    <div class="row">
+      <div class="col">
+        <div class="d-grid">
+          <%= link_to edit_movie_path(movie), class: "btn btn-outline-secondary" do %>
+            <i class="fa-regular fa-pen-to-square"></i> Edit
+          <% end %>
+        </div>
+      </div>
+      <div class="col">
+        <div class="d-grid">
+          <%= link_to movie, data: { method: :delete, confirm: "Are you sure?" }, class: "btn btn-outline-danger" do %>
+            <i class="fa-regular fa-trash-can"></i> Delete
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <small class="text-muted">Last updated <%= time_ago_in_words(movie.updated_at) %> ago</small>
+  </div>
+</div>

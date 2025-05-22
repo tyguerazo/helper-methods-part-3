@@ -1,57 +1,50 @@
 class MoviesController < ApplicationController
+  before_action :set_movie, only: [:show, :edit, :update, :destroy]
+
+  def index
+    @movies = Movie.order(created_at: :desc)
+  end
+
+  def show
+  end
+
   def new
     @movie = Movie.new
   end
 
-  def index
-    @movies = Movie.order(created_at: :desc)
-
-    respond_to do |format|
-      format.json { render json: @movies }
-
-      format.html
-    end
-  end
-
-  def show
-    @movie = Movie.find(params.fetch(:id))
+  def edit
   end
 
   def create
-    movie_params = params.require(:movie).permit(:title, :description)
-
     @movie = Movie.new(movie_params)
 
-    if @movie.valid?
-      @movie.save
-
-      redirect_to movies_url, notice: "Movie was successfully created."
+    if @movie.save
+      redirect_to @movie, notice: "Movie was successfully created."
     else
-      render "new"
+      render :new, status: :unprocessable_entity
     end
   end
 
-  def edit
-    @movie = Movie.find(params.fetch(:id))
-  end
-
   def update
-    @movie = Movie.find(params.fetch(:id))
-
-    movie_params = params.require(:movie).permit(:title, :description)
-
     if @movie.update(movie_params)
       redirect_to @movie, notice: "Movie was successfully updated."
     else
-      render "edit"
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @movie = Movie.find(params.fetch(:id))
-
     @movie.destroy
+    redirect_to movies_path, notice: "Movie was successfully deleted."
+  end
 
-    redirect_to movies_url, notice: "Movie was successfully destroyed."
+  private
+
+  def set_movie
+    @movie = Movie.find(params[:id])
+  end
+
+  def movie_params
+    params.require(:movie).permit(:title, :description, :image_url, :released_on)
   end
 end

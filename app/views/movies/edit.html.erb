@@ -1,5 +1,12 @@
 <h1>Edit movie</h1>
 
+
+<%= render partial: "movies/form", locals: { movie: @movie } %>
+
+<%= link_to "Show this movie", @movie, class: "btn btn-secondary" %>
+<%= link_to "Back to movies", movies_path, class: "btn btn-secondary" %>
+
+
 <% @movie.errors.full_messages.each do |message| %>
   <p style="color: red;"><%= message %></p>
 <% end %>
